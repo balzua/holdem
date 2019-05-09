@@ -16,7 +16,7 @@ export class Deck {
         })
     }
     public dealCard(): Card {
-        if (this._cards.length == 0) {
+        if (this._cards.length === 0) {
             // TO DO: Throw an error here, as deck is empty.
             return new Card(4, 'S');
         } else {

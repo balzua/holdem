@@ -12,24 +12,25 @@ const HAND_TIERS = {
     HIGH_CARD: 0
 }
 
-class Hand {
+export class Hand {
     public cards: Card[] = [];
     public handTier: number = 0;
-    private _ranks: number[][] = [];
+    private _ranks: number[][] = [[], [], [], [], []]
     private _handValues: number[] = [];
     public addCard(card: Card) {
         this.cards.push(card);
-        this._countRanks();
     }
     private _countRanks() {
         for (let i = 2; i <= 14; i++) {
-            let r = this.cards.filter(card => card.value == i);
-            this._ranks[r.length].push(r[0].value);
+            let r = this.cards.filter(card => card.value === i);
+            if (r.length > 0) {
+                this._ranks[r.length].push(r[0].value);
+            }
         }
     }
     private _isFlush(): boolean {
         for (let i = 1; i < this.cards.length; i++) {
-            if (this.cards[0].suit != this.cards[i].suit) {
+            if (this.cards[0].suit !== this.cards[i].suit) {
                 return false;
             }
         }
@@ -67,6 +68,7 @@ class Hand {
     }
 
     public scoreHand(): number {
+        this._countRanks();
         let isStraight = this._isStraight();
         let isFlush = this._isFlush();
         if (isFlush && isStraight) {
