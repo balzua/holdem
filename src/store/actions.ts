@@ -1,5 +1,4 @@
 import {ActionTypes, NEW_GAME, NEW_ROUND, ADD_PLAYER} from './types';
-import { Player } from '../components/player';
 
 export function newGame(): ActionTypes {
     return {

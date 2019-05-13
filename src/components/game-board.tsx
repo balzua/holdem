@@ -1,21 +1,36 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {GameState} from '../store/types';
 
-import {Hand} from './hand';
-import {Deck} from './deck';
+import {Player} from './player';
+import GameManager from './game-manager';
 
-export default class GameBoard extends React.Component {
+interface GameBoardProps {
+    roundNumber: number,
+    players: Player[]
+}
+
+export class GameBoard extends React.Component<GameBoardProps, any> {
     render() {
-        const cardDeck: Deck = new Deck();
-        const hand1: Hand = new Hand();
-        cardDeck.shuffle();
-        for (let i = 0; i <= 5; i++) {
-            hand1.addCard(cardDeck.dealCard());
-        }
-        console.log(hand1);
-        console.log(hand1.scoreHand());
+        const playerListItems = this.props.players.map(player => <li>{player.name}</li>);
         return (
             <div className="gameBoard">
+                <div className="playerList">
+                    <h2>Players</h2>
+                    <ul className="playerList">
+                        {playerListItems}
+                    </ul>
+                </div>
+                <span className="roundNumber">{this.props.roundNumber}</span>
+                <GameManager />
             </div>
         )
     }
 }
+
+const mapStateToProps = (state: GameState) => ({
+    roundNumber: state.roundNumber,
+    players: state.players
+});
+
+export default connect(mapStateToProps)(GameBoard);
